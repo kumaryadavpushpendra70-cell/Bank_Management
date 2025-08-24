@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard - Bank System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="bank-header">
+    <h1>Bank of India</h1>
+</div>
+
+<div class="container">
+    <h2>Welcome, {{ session.username }}</h2>
+
+    <!-- Balance Card -->
+    <div class="card balance-card">
+        <h3>Account Balance</h3>
+        <p>₹{{ balance }}</p>
+    </div>
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul>
+          {% for category, message in messages %}
+            <li><strong>{{ category|title }}:</strong> {{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <!-- Deposit & Withdraw in two cards -->
+    <div class="card-grid">
+        <div class="card">
+            <h3>Deposit Money</h3>
+            <form method="post" action="/transaction/deposit">
+                <input type="number" step="0.01" name="amount" placeholder="Enter amount" required>
+                <button type="submit" class="btn deposit-btn">Deposit</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h3>Withdraw Money</h3>
+            <form method="post" action="/transaction/withdraw">
+                <input type="number" step="0.01" name="amount" placeholder="Enter amount" required>
+                <button type="submit" class="btn withdraw-btn">Withdraw</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Transaction History -->
+    <div class="card">
+        <h3>Transaction History</h3>
+        <table>
+            <tr><th>Type</th><th>Amount</th><th>Date</th></tr>
+            {% for t in history %}
+            <tr>
+                <td>{{ t.type }}</td>
+                <td>₹{{ t.amount }}</td>
+                <td>{{ t.date }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <br>
+    <a href="/auth/logout" class="btn logout-btn">Logout</a>
+</div>
+</body>
+</html>

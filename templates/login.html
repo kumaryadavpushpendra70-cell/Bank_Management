@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login - Bank System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="bank-header">
+    <h1>Bank of India</h1>
+</div>
+
+<div class="container">
+    <div class="card">
+        <h2>Login</h2>
+
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <ul>
+              {% for category, message in messages %}
+                <li><strong>{{ category|title }}:</strong> {{ message }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+
+        <form method="post">
+            <input type="text" name="username" placeholder="Enter Username" required><br>
+            <input type="password" name="password" placeholder="Enter Password" required><br>
+            <button type="submit" class="btn login-btn">Login</button>
+        </form>
+        <br>
+        <a href="{{ url_for('auth.register') }}">Create an Account</a>
+    </div>
+</div>
+</body>
+</html>
